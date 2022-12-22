@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import serveStatic from 'serve-static'
 import type { MetaOptions, ManifestOptions, IconOptions, PWAContext, WorkboxOptions } from '../types'
+import { fromNodeMiddleware } from 'h3'
 import { PKG } from './utils'
 import { icon } from './icon'
 import { manifest } from './manifest'
@@ -63,7 +64,7 @@ export default async function pwa (moduleOptions: PWAOptions) {
     const clientDir = resolve(nuxt.options.buildDir, 'dist/client')
     nuxt.options.serverMiddleware.push({
       path: nuxt.options.build.publicPath,
-      handler: serveStatic(clientDir)
+      handler: fromNodeMiddleware(serveStatic(clientDir))
     })
   }
 }
